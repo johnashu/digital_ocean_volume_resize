@@ -6,7 +6,8 @@ create a file named `.env`
 
 Add the following:
 
-> Generate in the API section of Digital Ocean
+> Generate a token in the API section of Digital Ocean
+
 > Use whole numbers for the Percentages
 
 ```
