@@ -9,6 +9,8 @@ Add the following:
 > Generate in the API section of Digital Ocean
 > Use whole numbers for the Percentages
 
+```
+
 TOKEN=<DIGITAL OCEAN API TOKEN>
 VOLUME_NAME=volume-sfo3-02
 INCREASE_BY_PERCENTAGE=1 
@@ -19,6 +21,7 @@ EMAIL_PASS=<EMAIL PASSWORD>
 EMAIL_FROM=john@maffaz.com
 EMAIL_TO=mennovandevlees@gmail.com
 
+```
 Toggle the `SEND_EMAIL` flag in `includes/config.py` choose True / False to send emails.
 
 # install
