@@ -1,4 +1,4 @@
-# monitor and resize Digital ocean volume
+# Monitor and Resize Digital Ocean Volume
 
 # Create .env file
 
