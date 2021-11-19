@@ -23,7 +23,7 @@ EMAIL_FROM=john@maffaz.com
 EMAIL_TO=mennovandevlees@gmail.com
 
 ```
-Toggle the `SEND_EMAIL` flag in `includes/config.py` choose True / False to send emails.
+Toggle the `SEND_EMAIL` flag in `includes/config.py` choose `True` / `False` to send emails.
 
 # install
 `sudo apt update && sudo apt upgrade -y`
