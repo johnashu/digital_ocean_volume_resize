@@ -78,4 +78,4 @@ EOF
 
 `journalctl  -xefu resize_hdd`
 
-
+log file is in `logs/data.log`
