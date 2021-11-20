@@ -31,6 +31,7 @@ d = load_dotenv(find_dotenv())
 log.info(f"Env file Found?  ::  {d}")
 
 DELAY = 3600  # seconds
+HOURS = DELAY // 60 // 60
 
 DO_API = "https://api.digitalocean.com/v2/"
 ENDPOINT = "volumes/"
