@@ -14,7 +14,7 @@ def check_hdd_size(hdd_name: str) -> psutil:
 
 
 # resize HDD in Linux
-def resize_hdd_linux(hdd_name):
+def resize_hdd_linux(hdd_name: str) -> tuple:
     hdd_name = hdd_name.replace("-", "_")
     try:
         get_device = f"df -P /mnt/{hdd_name}" + " | awk 'END{print $1}'"

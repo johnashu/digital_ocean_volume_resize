@@ -1,7 +1,7 @@
 import subprocess
 
 
-def process(cmd):
+def process(cmd: str) -> None:
     return (
         subprocess.Popen(
             cmd, shell=True, universal_newlines=True, stdout=subprocess.PIPE
@@ -11,7 +11,7 @@ def process(cmd):
     )
 
 
-def flatten(d):
+def flatten(d: dict) -> None:
     """Flatten a nested dictionary.
 
     Args:

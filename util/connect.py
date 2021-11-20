@@ -33,7 +33,7 @@ def api_v2(
 
 def resize_volume(
     INCREASE_BY_PERCENTAGE: int, volume_name: str, token: str, endpoint: str
-) -> None:
+) -> api_v2:
     volumes = api_v2(token, endpoint.format(f"?name={volume_name}"))[0]["volumes"]
     volume = flatten([x for x in volumes if x["name"] == volume_name][0])
     size = volume["size_gigabytes"]

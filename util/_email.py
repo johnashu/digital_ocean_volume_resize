@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 from includes.config import *
 
 
-def send_email(subject: str, message: str):
+def send_email(subject: str, message: str) -> None:
 
     msg = MIMEMultipart()
 
