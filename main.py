@@ -38,9 +38,13 @@ def run() -> None:
                             success_msg = f"HDD {VOLUME_NAME} has been resized\n\n{msg}"
                             send_email(success_subject, success_msg)
                     else:
+                        log.error(f'Failed to rezie on System..')
                         send_error_email(msg)
                 else:
+                    log.error(f'Failed to rezie on Digital Ocean..')
                     send_error_email(full)
+            else:
+                log.info(f'HDD Size is healthy, sleeping for {DELAY // 60} mins..')
         except Exception as e:
             send_error_email(e)
             log.info(e)

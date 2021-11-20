@@ -29,3 +29,13 @@ EMAIL_SMTP = os.environ["EMAIL_SMTP"]
 EMAIL_PASS = os.environ["EMAIL_PASS"]
 EMAIL_FROM = os.environ["EMAIL_FROM"]
 EMAIL_TO = os.environ["EMAIL_TO"]
+
+
+def create_data_path(pth: str, data_path: str = "logs") -> os.path:
+    cwd = os.getcwd()
+    p = os.path.join(cwd, data_path, pth)
+    if not os.path.exists(p):
+        os.mkdir(p)
+    return p
+
+create_data_path((""))
