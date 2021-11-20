@@ -3,6 +3,15 @@ import os
 from dotenv import load_dotenv, find_dotenv
 import logging
 
+def create_data_path(pth: str, data_path: str = "logs") -> os.path:
+    cwd = os.getcwd()
+    p = os.path.join(cwd, data_path, pth)
+    if not os.path.exists(p):
+        os.mkdir(p)
+    return p
+
+create_data_path((""))
+
 file_handler = logging.FileHandler(filename=os.path.join("logs", "data.log"))
 stdout_handler = logging.StreamHandler(sys.stdout)
 handlers = [file_handler, stdout_handler]
@@ -31,11 +40,3 @@ EMAIL_FROM = os.environ["EMAIL_FROM"]
 EMAIL_TO = os.environ["EMAIL_TO"]
 
 
-def create_data_path(pth: str, data_path: str = "logs") -> os.path:
-    cwd = os.getcwd()
-    p = os.path.join(cwd, data_path, pth)
-    if not os.path.exists(p):
-        os.mkdir(p)
-    return p
-
-create_data_path((""))
