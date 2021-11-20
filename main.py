@@ -43,10 +43,10 @@ def run() -> None:
                             send_email(success_subject, success_msg)
                             log.info(f"sleeping for {HOURS} Hour(s)..")
                     else:
-                        log.error(f"Failed to rezie on System..")
+                        log.error(f"Failed to resize volume on System..")
                         send_error_email(msg)
                 else:
-                    log.error(f"Failed to rezie on Digital Ocean..")
+                    log.error(f"Failed to resize volume on Digital Ocean..")
                     send_error_email(full)
 
             else:
