@@ -16,38 +16,43 @@ def run() -> None:
         try:
             # get HDD size %
             hdd_size_remaining = 100 - check_hdd_size(VOLUME_NAME)
-            log.info(f'HDD Size  ::  {hdd_size_remaining}')
+            log.info(f"HDD Size  ::  {hdd_size_remaining}")
 
             # Check if it is < PERCENTAGE_TO_INCREASE
             if hdd_size_remaining <= PERCENTAGE_TO_INCREASE:
-                log.info(f'HDD Size is <= PERCENTAGE_TO_INCREASE.. Increasing size on Digital Ocean')
+                log.info(
+                    f"HDD Size is <= PERCENTAGE_TO_INCREASE.. Increasing size on Digital Ocean"
+                )
                 # resize HDD on Digital Ocean
                 full, resize = resize_volume(
                     INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT
                 )
                 if resize["status"] == "done":
-                    log.info(f'HDD Size increased.. Increasing size on System')
+                    log.info(f"HDD Size increased.. Increasing size on System")
                     # resize on Linux
                     res, msg = resize_hdd_linux(VOLUME_NAME)
                     if res:
-                        log.info('HDD Resize Successful.. ')
+                        log.info("HDD Resize Successful.. ")
                         # send email success
                         if SEND_EMAIL:
-                            log.info('Sending Email..')
-                            success_subject = f"[VALIDATOR INFO] HDD {VOLUME_NAME} resized"
+                            log.info("Sending Email..")
+                            success_subject = (
+                                f"[VALIDATOR INFO] HDD {VOLUME_NAME} resized"
+                            )
                             success_msg = f"HDD {VOLUME_NAME} has been resized\n\n{msg}"
                             send_email(success_subject, success_msg)
                     else:
-                        log.error(f'Failed to rezie on System..')
+                        log.error(f"Failed to rezie on System..")
                         send_error_email(msg)
                 else:
-                    log.error(f'Failed to rezie on Digital Ocean..')
+                    log.error(f"Failed to rezie on Digital Ocean..")
                     send_error_email(full)
             else:
-                log.info(f'HDD Size is healthy, sleeping for {DELAY // 60} Hour(s)..')
+                log.info(f"HDD Size is healthy, sleeping for {DELAY // 60} Hour(s)..")
         except Exception as e:
             send_error_email(e)
             log.info(e)
         sleep(DELAY)
+
 
 run()

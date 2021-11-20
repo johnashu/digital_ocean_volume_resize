@@ -4,7 +4,7 @@ import logging as log
 
 # check HDD size
 def check_hdd_size(hdd_name: str) -> psutil:
-    hdd_name = hdd_name.replace('-', '_')
+    hdd_name = hdd_name.replace("-", "_")
     hdd_name = f"/mnt/{hdd_name}"
     obj_Disk = psutil.disk_usage(hdd_name)
     # log.info(obj_Disk.total / (1024.0 ** 3))
@@ -15,7 +15,7 @@ def check_hdd_size(hdd_name: str) -> psutil:
 
 # resize HDD in Linux
 def resize_hdd_linux(hdd_name):
-    hdd_name = hdd_name.replace('-', '_')
+    hdd_name = hdd_name.replace("-", "_")
     try:
         get_device = f"df -P /mnt/{hdd_name}" + " | awk 'END{print $1}'"
         device = process(get_device)
