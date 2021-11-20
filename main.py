@@ -7,7 +7,7 @@ from util._email import send_email
 
 def send_error_email(e: str) -> None:
     subject = f"[VALIDATOR ERROR] Problem Resizing HDD {VOLUME_NAME}"
-    msg = f"There was a problem resizing your HDD\n\nThe following Error occured\n\n{e}\n\nPlease Check your node for more information"
+    msg = f"There was a problem resizing your HDD\n\tThe following Error occured\n\t{e}\n\tPlease Check your node for more information"
     send_email(subject, msg)
 
 
@@ -39,7 +39,7 @@ def run() -> None:
                             success_subject = (
                                 f"[VALIDATOR INFO] HDD {VOLUME_NAME} resized"
                             )
-                            success_msg = f"HDD {VOLUME_NAME} has been resized\n\n{msg}"
+                            success_msg = f"HDD {VOLUME_NAME} has been resized\n\t{msg}\n\tsleeping for {DELAY // 60 // 60} Hour(s).."
                             send_email(success_subject, success_msg)
                     else:
                         log.error(f"Failed to rezie on System..")
@@ -47,6 +47,7 @@ def run() -> None:
                 else:
                     log.error(f"Failed to rezie on Digital Ocean..")
                     send_error_email(full)
+
             else:
                 log.info(
                     f"HDD Size is healthy, sleeping for {DELAY // 60 // 60} Hour(s).."
