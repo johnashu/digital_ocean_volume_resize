@@ -18,10 +18,10 @@ def run() -> None:
             hdd_size_remaining = 100 - check_hdd_size(VOLUME_NAME)
             log.info(f"HDD Size  ::  {hdd_size_remaining}")
 
-            # Check if it is < PERCENTAGE_TO_INCREASE
-            if hdd_size_remaining <= PERCENTAGE_TO_INCREASE:
+            # Check if it is < BELOW_THIS_PERCENT_TO_RESIZE
+            if hdd_size_remaining <= BELOW_THIS_PERCENT_TO_RESIZE:
                 log.info(
-                    f"HDD Size is <= PERCENTAGE_TO_INCREASE.. Increasing size on Digital Ocean"
+                    f"HDD Size is <= BELOW_THIS_PERCENT_TO_RESIZE.. Increasing size on Digital Ocean"
                 )
                 # resize HDD on Digital Ocean
                 full, resize = resize_volume(
