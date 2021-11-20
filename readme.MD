@@ -2,13 +2,15 @@
 
 # Create .env file
 
-create a file named `.env` 
+Create a file named `.env` 
 
 Add the following:
 
 > Generate a token in the API section of Digital Ocean
 
 > Use whole numbers for the Percentages
+
+> Add Email information - See your email provider..
 
 ```
 
@@ -25,7 +27,8 @@ EMAIL_TO=mennovandevlees@gmail.com
 ```
 Toggle the `SEND_EMAIL` flag in `includes/config.py` choose `True` / `False` to send emails.
 
-# install
+# install dependencies
+
 `sudo apt update && sudo apt upgrade -y`
 
 `apt install python3-pip`
@@ -61,6 +64,7 @@ WantedBy=multi-user.target
 EOF
 
 ```
+# Trigger SystemD and Check Status
 
 `sudo systemctl daemon-reload`
 
@@ -73,7 +77,7 @@ EOF
 `sudo service resize_hdd status`
 
 
-# Check Logs
+# Read Logs
 `tail -f /var/log/syslog`
 
 `journalctl  -xefu resize_hdd`
