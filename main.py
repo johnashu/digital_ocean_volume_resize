@@ -44,7 +44,7 @@ def run() -> None:
                     log.error(f'Failed to rezie on Digital Ocean..')
                     send_error_email(full)
             else:
-                log.info(f'HDD Size is healthy, sleeping for {DELAY // 60} mins..')
+                log.info(f'HDD Size is healthy, sleeping for {DELAY // 60} Hour(s)..')
         except Exception as e:
             send_error_email(e)
             log.info(e)
