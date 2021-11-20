@@ -39,8 +39,9 @@ def run() -> None:
                             success_subject = (
                                 f"[VALIDATOR INFO] HDD {VOLUME_NAME} resized"
                             )
-                            success_msg = f"HDD {VOLUME_NAME} has been resized\n\t{msg}\n\tsleeping for {HOURS} Hour(s).."
+                            success_msg = f"HDD {VOLUME_NAME} has been resized\n\t{msg}"
                             send_email(success_subject, success_msg)
+                            log.info(f"sleeping for {HOURS} Hour(s)..")
                     else:
                         log.error(f"Failed to rezie on System..")
                         send_error_email(msg)
