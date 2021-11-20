@@ -16,7 +16,7 @@ def run() -> None:
         try:
             # get HDD size %
             hdd_size_remaining = 100 - check_hdd_size(VOLUME_NAME)
-            log.info(f"HDD Size  ::  {hdd_size_remaining}")
+            log.info(f"HDD Size  ::  {hdd_size_remaining} % Remaining..")
 
             # Check if it is < BELOW_THIS_PERCENT_TO_RESIZE
             if hdd_size_remaining <= BELOW_THIS_PERCENT_TO_RESIZE:
