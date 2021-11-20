@@ -32,14 +32,14 @@ def api_v2(
 
 
 def resize_volume(
-    INCREASE_BY_PERCENTAGE: int, volume_name: str, token: str, endpoint: str
+    percentage_increase: int, volume_name: str, token: str, endpoint: str
 ) -> api_v2:
     volumes = api_v2(token, endpoint.format(f"?name={volume_name}"))[0]["volumes"]
     volume = flatten([x for x in volumes if x["name"] == volume_name][0])
     size = volume["size_gigabytes"]
     volume_id = volume["id"]
     region = volume["slug"]
-    new_size = size + (size // 100 * INCREASE_BY_PERCENTAGE)
+    new_size = size + (size // 100 * percentage_increase)
     d = {"type": "resize", "size_gigabytes": new_size, "region": region}  # slug
     e = f"{endpoint}{volume_id}/actions"
     log.info(e)
