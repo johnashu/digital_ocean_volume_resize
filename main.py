@@ -49,9 +49,7 @@ def run() -> None:
                     send_error_email(full)
 
             else:
-                log.info(
-                    f"HDD Size is healthy, sleeping for {HOURS} Hour(s).."
-                )
+                log.info(f"HDD Size is healthy, sleeping for {HOURS} Hour(s)..")
         except Exception as e:
             send_error_email(e)
             log.error(e)
