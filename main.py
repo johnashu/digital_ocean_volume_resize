@@ -1,6 +1,7 @@
 from time import sleep
 
-from util.connect import *
+from includes.config import *
+from util.connect import resize_volume_linnode, resize_volume_digital_ocean
 from util.hdd_utils import check_hdd_size, resize_hdd_linux
 from util.send_alerts import send_success_alerts, send_error_alerts
 
@@ -19,7 +20,9 @@ def run(provider_info: object) -> None:
                     f"HDD Size [ {hdd_size_remaining}% ] is <= {BELOW_THIS_PERCENT_TO_RESIZE}%.. Increasing size on {provider} volume {VOLUME_NAME}"
                 )
                 # resize HDD on Digital Ocean
-                full, flat, resize_msg = func(INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT)
+                full, flat, resize_msg = func(
+                    INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT
+                )
                 if flat.get("status") in ("done", "resizing"):
                     log.info(f"HDD Size increased.. Increasing size on System")
                     # resize on Linux
@@ -54,4 +57,5 @@ providers = {
     "DO": (resize_volume_digital_ocean, "Digital Ocean"),
     "LN": (resize_volume_linnode, "LinNode"),
 }
+
 run(providers[PROVIDER])

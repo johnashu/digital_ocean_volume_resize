@@ -1,13 +1,8 @@
 import requests
 import json
 
-try:
-    from util.tools import flatten
-    from includes.config import *
-except ModuleNotFoundError:
-    from tools import flatten
-    from config import *
-
+from util.tools import flatten
+from includes.config import *
 
 def connect_to_api(
     token: str,
@@ -17,7 +12,7 @@ def connect_to_api(
     j: dict = {},
     key: str = "",
     rtn_data: tuple = (),
-    resize_msg=""
+    resize_msg="",
 ) -> dict:
 
     rtn = {}
@@ -31,9 +26,9 @@ def connect_to_api(
         data = r.text
     if data.get("errors"):
         return data, data, resize_msg
-    if data.get('id'):
-        if data['id'] == 'unprocessable_entity':
-             return data, data, resize_msg
+    if data.get("id"):
+        if data["id"] == "unprocessable_entity":
+            return data, data, resize_msg
     rtn = data
 
     if rtn_data:
@@ -67,7 +62,7 @@ def resize_volume_digital_ocean(
 
     resize_msg = f"Volume {volume_name} from {size} GB -> {new_size} GB"
     log.info(f"Resizing {resize_msg}")
-    
+
     return connect_to_api(
         token,
         DO_API,
@@ -76,7 +71,7 @@ def resize_volume_digital_ocean(
         call=requests.post,
         key="action",
         rtn_data=("type", "id", "status"),
-        resize_msg=resize_msg
+        resize_msg=resize_msg,
     )
 
 
@@ -98,7 +93,13 @@ def resize_volume_linnode(
     log.info(f"Resizing {resize_msg}")
 
     return connect_to_api(
-        token, LN_API, e, resize_msg=resize_msg, j=j, call=requests.post, rtn_data=("size", "id", "status"),
+        token,
+        LN_API,
+        e,
+        resize_msg=resize_msg,
+        j=j,
+        call=requests.post,
+        rtn_data=("size", "id", "status"),
     )
 
 

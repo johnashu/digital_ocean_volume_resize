@@ -1,14 +1,15 @@
 import subprocess
 
 
-def process(cmd: str) -> None:
-    return (
-        subprocess.Popen(
-            cmd, shell=True, universal_newlines=True, stdout=subprocess.PIPE
-        )
-        .communicate()[0]
-        .strip()
-    )
+def process(cmd: str) -> subprocess:
+    o, e = subprocess.Popen(
+        cmd,
+        shell=True,
+        universal_newlines=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    ).communicate()
+    return o, e
 
 
 def flatten(d: dict) -> None:

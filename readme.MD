@@ -1,4 +1,4 @@
-# Monitor and Resize Digital Ocean Volume
+# Monitor and Resize Digital Ocean Linnode Volumes
 
 # Create .env file
 
@@ -12,19 +12,25 @@ Add the following:
 
 > Add Email information - See your email provider..
 
+> If using Linnode, make sure to setup Email
+> https://www.linode.com/community/questions/19082/i-just-created-my-first-linode-and-i-cant-send-emails-why
+
+> Add Vstats Token.  On Telegram -> @vStatsBot - use command `/vincrease` to generate a token.
+
+> Toggle the `SEND_EMAIL` & `SEND_ALERT_TO_VSTATS` choose `True` / `False` to send alerts to these 2.
+
 ```
 # Choose DO (Digital Ocean) / LN (Linnode)
-PROVIDER=LN
-VOLUME_NAME=testhdd
+PROVIDER=DO
+VOLUME_NAME=volume-fra1-01
 
-TOKEN=<DIGITAL OCEAN OR LINNODE API TOKEN>
+# API Key
+TOKEN=<PROVIDER API TOKEN>
 
-INCREASE_BY_PERCENTAGE=2 # whole numbers only
+INCREASE_BY_PERCENTAGE=2 
 BELOW_THIS_PERCENT_TO_RESIZE=5
 
 # Email Options
-# If using Linnode, make sure to setup Email 
-# https://www.linode.com/community/questions/19082/i-just-created-my-first-linode-and-i-cant-send-emails-why
 SEND_EMAIL=False
 EMAIL_SMTP=smtp.123-reg.co.uk
 EMAIL_PASS=<EMaiL PASSWORD>
@@ -32,12 +38,10 @@ EMAIL_FROM=john@maffaz.com
 EMAIL_TO=mennovandevlees@gmail.com
 
 # Vstats Telegram Bot Options
-# @vStatsBot - use command /vincrease to generate a token.
 SEND_ALERT_TO_VSTATS=True
 VSTATS_TOKEN=<VSTATS BOT>
 
 ```
-Toggle the `SEND_EMAIL` & `SEND_ALERT_TO_VSTATS` choose `True` / `False` to send alerts to these 2.
 
 # install dependencies
 
@@ -47,11 +51,13 @@ Toggle the `SEND_EMAIL` & `SEND_ALERT_TO_VSTATS` choose `True` / `False` to send
 
 `pip3 install -r requirements.txt`
 
-run
+# Run program.
+
 `python3 main.py`
 
 
 # create systemd
+
 ``` bash 
 
 cat<<-EOF > /etc/systemd/system/resize_hdd.service
@@ -90,6 +96,7 @@ EOF
 
 
 # Read Logs
+
 `tail -f /var/log/syslog`
 
 `journalctl  -xefu resize_hdd`

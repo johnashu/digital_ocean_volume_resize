@@ -1,5 +1,5 @@
 import psutil
-from util.tools import flatten, process
+from util.tools import process
 import logging as log
 
 # check HDD size
@@ -18,14 +18,24 @@ def resize_hdd_linux(hdd_name: str) -> tuple:
     hdd_name = hdd_name.replace("-", "_")
     try:
         get_device = f"df -P /mnt/{hdd_name}" + " | awk 'END{print $1}'"
-        device = process(get_device)
+        device, error = process(get_device)
         log.info(device)
         resize = f"resize2fs {device}"
-        resized = process(resize)
+        resized, error = process(resize)
         log.info(resized)
+        if error:
+            not_resized_message = "do!"
+            error_msg = f"Resizing Did not complete on System\nYou may need to restart your node.\n\n{error}"
+            log.error(error_msg)
+            try:
+                splits = error.split()
+                if splits[-1].endswith(not_resized_message):
+                    return False, error_msg
+            except IndexError:
+                return False, error_msg
         return True, resized
     except FileNotFoundError as e:
-        return False, e
+        return False, f"Resizing Did not complete on System\n\n{e}"
 
 
 if __name__ == "__main__":
