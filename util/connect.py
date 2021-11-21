@@ -17,6 +17,7 @@ def connect_to_api(
     j: dict = {},
     key: str = "",
     rtn_data: tuple = (),
+    resize_msg=""
 ) -> dict:
 
     rtn = {}
@@ -29,10 +30,10 @@ def connect_to_api(
     except json.decoder.JSONDecodeError:
         data = r.text
     if data.get("errors"):
-        return data, data
+        return data, data, resize_msg
     if data.get('id'):
         if data['id'] == 'unprocessable_entity':
-             return data, data
+             return data, data, resize_msg
     rtn = data
 
     if rtn_data:
@@ -44,14 +45,14 @@ def connect_to_api(
             except:
                 pass
 
-    return rtn, flatten(rtn)
+    return rtn, flatten(rtn), resize_msg
 
 
 def resize_volume_digital_ocean(
     percentage_increase: int, volume_name: str, token: str, endpoint: str
 ) -> connect_to_api:
 
-    get_volume_data, _ = connect_to_api(
+    get_volume_data, _, _ = connect_to_api(
         token, DO_API, endpoint + f"?name={volume_name}"
     )
     volumes = get_volume_data["volumes"]
@@ -64,8 +65,9 @@ def resize_volume_digital_ocean(
     j = {"type": "resize", "size_gigabytes": new_size, "region": region}  # slug
     e = f"{endpoint}/{volume_id}/actions"
 
-    log.info(f"Resizing Volume {volume_name} from {size} GB -> {new_size} GB")
-
+    resize_msg = f"Volume {volume_name} from {size} GB -> {new_size} GB"
+    log.info(f"Resizing {resize_msg}")
+    
     return connect_to_api(
         token,
         DO_API,
@@ -74,6 +76,7 @@ def resize_volume_digital_ocean(
         call=requests.post,
         key="action",
         rtn_data=("type", "id", "status"),
+        resize_msg=resize_msg
     )
 
 
@@ -81,7 +84,7 @@ def resize_volume_linnode(
     percentage_increase: int, volume_name: str, token: str, endpoint: str
 ) -> connect_to_api:
 
-    get_volume_data, _ = connect_to_api(token, LN_API, endpoint)
+    get_volume_data, _, _ = connect_to_api(token, LN_API, endpoint)
     volumes = get_volume_data["data"]
     volume = flatten([x for x in volumes if x["label"] == volume_name][0])
     size = int(volume["size"])
@@ -91,21 +94,22 @@ def resize_volume_linnode(
     j = {"size": new_size}  # slug
     e = f"{endpoint}/{volume_id}/resize"
 
-    log.info(f"Resizing Volume {volume_name} from {size} GB -> {new_size} GB")
+    resize_msg = f"Volume {volume_name} from {size} GB -> {new_size} GB"
+    log.info(f"Resizing {resize_msg}")
 
     return connect_to_api(
-        token, LN_API, e, j=j, call=requests.post, rtn_data=("size", "id", "status"),
+        token, LN_API, e, resize_msg=resize_msg, j=j, call=requests.post, rtn_data=("size", "id", "status"),
     )
 
 
 if __name__ == "__main__":
-    # full, flat = connect_to_api(TOKEN, LN_API, ENDPOINT, requests.get)
+    # full, flat, resize_msg = connect_to_api(TOKEN, LN_API, ENDPOINT, requests.get)
 
     # print(full)
     print(SEND_EMAIL)
     if not SEND_EMAIL:
         print(INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT)
-        full, flat = resize_volume_linnode(
+        full, flat, resize_msg = resize_volume_linnode(
             INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT
         )
 

@@ -19,7 +19,7 @@ def run(provider_info: object) -> None:
                     f"HDD Size [ {hdd_size_remaining}% ] is <= {BELOW_THIS_PERCENT_TO_RESIZE}%.. Increasing size on {provider} volume {VOLUME_NAME}"
                 )
                 # resize HDD on Digital Ocean
-                full, flat = func(INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT)
+                full, flat, resize_msg = func(INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT)
                 if flat.get("status") in ("done", "resizing"):
                     log.info(f"HDD Size increased.. Increasing size on System")
                     # resize on Linux
@@ -27,22 +27,22 @@ def run(provider_info: object) -> None:
                     if res:
                         log.info("HDD Resize Successful.. ")
                         # send email success
-                        send_success_alerts(msg, VOLUME_NAME)
+                        send_success_alerts(msg, VOLUME_NAME, resize_msg)
                         log.info(f"sleeping for {HOURS} Hour(s)..")
 
                     else:
                         log.error(f"Failed to resize volume on System..")
-                        send_error_alerts(msg, VOLUME_NAME)
+                        send_error_alerts(msg, VOLUME_NAME, resize_msg)
                 else:
                     log.error(
                         f"Failed to resize volume on {provider}\n{full}\n{flat}.."
                     )
-                    send_error_alerts(full, VOLUME_NAME)
+                    send_error_alerts(full, VOLUME_NAME, resize_msg)
 
             else:
                 log.info(f"HDD Size is healthy, sleeping for {HOURS} Hour(s)..")
         except Exception as e:
-            send_error_alerts(e, VOLUME_NAME)
+            send_error_alerts(e, VOLUME_NAME, resize_msg)
             log.error(e)
             log.error(
                 f"Error email sent, sleeping for {HOURS} Hour(s).. Please fix me!"
