@@ -6,6 +6,9 @@ from includes.config import *
 
 
 def send_email(subject: str, message: str) -> None:
+    if not SEND_EMAIL:
+        log.info("Email sending not turned on, no email sent!")
+        return
 
     msg = MIMEMultipart()
 

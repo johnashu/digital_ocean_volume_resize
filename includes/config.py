@@ -34,15 +34,24 @@ DELAY = 3600  # seconds
 HOURS = DELAY // 60 // 60
 
 DO_API = "https://api.digitalocean.com/v2/"
-ENDPOINT = "volumes/"
+LN_API = "https://api.linode.com/v4/"
 
+ENDPOINT = "volumes"
+
+PROVIDER = os.environ["PROVIDER"]
 TOKEN = os.environ["TOKEN"]
 VOLUME_NAME = os.environ["VOLUME_NAME"]
 INCREASE_BY_PERCENTAGE = int(os.environ["INCREASE_BY_PERCENTAGE"])
 BELOW_THIS_PERCENT_TO_RESIZE = int(os.environ["BELOW_THIS_PERCENT_TO_RESIZE"])
 
-SEND_EMAIL = True
+SEND_EMAIL = True if os.environ["SEND_EMAIL"].lower() == "true" else False
 EMAIL_SMTP = os.environ["EMAIL_SMTP"]
 EMAIL_PASS = os.environ["EMAIL_PASS"]
 EMAIL_FROM = os.environ["EMAIL_FROM"]
 EMAIL_TO = os.environ["EMAIL_TO"]
+
+SEND_ALERT_TO_VSTATS = (
+    True if os.environ["SEND_ALERT_TO_VSTATS"].lower() == "true" else False
+)
+VSTATS_TOKEN = os.environ["VSTATS_TOKEN"]
+VSTATS_API = "https://vstats.one/api/volume-increase"

@@ -2,16 +2,11 @@ from time import sleep
 
 from util.connect import *
 from util.hdd_utils import check_hdd_size, resize_hdd_linux
-from util._email import send_email
+from util.send_alerts import send_success_alerts, send_error_alerts
 
 
-def send_error_email(e: str) -> None:
-    subject = f"[VALIDATOR ERROR] Problem Resizing HDD {VOLUME_NAME}"
-    msg = f"There was a problem resizing your HDD\n\tThe following Error occured\n\t{e}\n\tPlease Check your node for more information"
-    send_email(subject, msg)
-
-
-def run() -> None:
+def run(provider_info: object) -> None:
+    func, provider = provider_info
     while True:
         try:
             # get HDD size %
@@ -21,38 +16,33 @@ def run() -> None:
             # Check if it is < BELOW_THIS_PERCENT_TO_RESIZE
             if hdd_size_remaining <= BELOW_THIS_PERCENT_TO_RESIZE:
                 log.info(
-                    f"HDD Size [ {hdd_size_remaining}% ] is <= {BELOW_THIS_PERCENT_TO_RESIZE}%.. Increasing size on Digital Ocean"
+                    f"HDD Size [ {hdd_size_remaining}% ] is <= {BELOW_THIS_PERCENT_TO_RESIZE}%.. Increasing size on {provider} volume {VOLUME_NAME}"
                 )
                 # resize HDD on Digital Ocean
-                full, resize = resize_volume(
-                    INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT
-                )
-                if resize["status"] == "done":
+                full, flat = func(INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT)
+                if flat.get("status") in ("done", "resizing"):
                     log.info(f"HDD Size increased.. Increasing size on System")
                     # resize on Linux
                     res, msg = resize_hdd_linux(VOLUME_NAME)
                     if res:
                         log.info("HDD Resize Successful.. ")
                         # send email success
-                        if SEND_EMAIL:
-                            log.info("Sending Email..")
-                            success_subject = (
-                                f"[VALIDATOR INFO] HDD {VOLUME_NAME} resized"
-                            )
-                            success_msg = f"HDD {VOLUME_NAME} has been resized\n\t{msg}"
-                            send_email(success_subject, success_msg)
-                            log.info(f"sleeping for {HOURS} Hour(s)..")
+                        send_success_alerts(msg, VOLUME_NAME)
+                        log.info(f"sleeping for {HOURS} Hour(s)..")
+
                     else:
                         log.error(f"Failed to resize volume on System..")
-                        send_error_email(msg)
+                        send_error_alerts(msg, VOLUME_NAME)
                 else:
-                    log.error(f"Failed to resize volume on Digital Ocean..")
-                    send_error_email(full)
+                    log.error(
+                        f"Failed to resize volume on {provider}\n{full}\n{flat}.."
+                    )
+                    send_error_alerts(full, VOLUME_NAME)
 
             else:
                 log.info(f"HDD Size is healthy, sleeping for {HOURS} Hour(s)..")
         except Exception as e:
-            send_error_email(e)
+            send_error_alerts(e, VOLUME_NAME)
             log.error(e)
             log.error(
                 f"Error email sent, sleeping for {HOURS} Hour(s).. Please fix me!"
@@ -60,4 +50,8 @@ def run() -> None:
         sleep(DELAY)
 
 
-run()
+providers = {
+    "DO": (resize_volume_digital_ocean, "Digital Ocean"),
+    "LN": (resize_volume_linnode, "LinNode"),
+}
+run(providers[PROVIDER])

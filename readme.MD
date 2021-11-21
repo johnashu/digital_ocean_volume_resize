@@ -6,26 +6,36 @@ Create a file named `.env`
 
 Add the following:
 
-> Generate a token in the API section of Digital Ocean
+> Generate a token in the API section of your provider.
 
 > Use whole numbers for the Percentages
 
 > Add Email information - See your email provider..
 
 ```
+# Choose DO (Digital Ocean) / LN (Linnode)
+PROVIDER=LN
+VOLUME_NAME=testhdd
 
-TOKEN=<DIGITAL OCEAN API TOKEN>
-VOLUME_NAME=volume-sfo3-02
-INCREASE_BY_PERCENTAGE=1 
+TOKEN=<DIGITAL OCEAN OR LINNODE API TOKEN>
+
+INCREASE_BY_PERCENTAGE=2 # whole numbers only
 BELOW_THIS_PERCENT_TO_RESIZE=5
 
+# Email Options
+SEND_EMAIL=False
 EMAIL_SMTP=smtp.123-reg.co.uk
-EMAIL_PASS=<EMAIL PASSWORD>
+EMAIL_PASS=<EMaiL PASSWORD>
 EMAIL_FROM=john@maffaz.com
 EMAIL_TO=mennovandevlees@gmail.com
 
+# Vstats Telegram Bot Options
+# @vStatsBot - use command /vincrease to generate a token.
+SEND_ALERT_TO_VSTATS=True
+VSTATS_TOKEN=<VSTATS BOT>
+
 ```
-Toggle the `SEND_EMAIL` flag in `includes/config.py` choose `True` / `False` to send emails.
+Toggle the `SEND_EMAIL` & `SEND_ALERT_TO_VSTATS` choose `True` / `False` to send alerts to these 2.
 
 # install dependencies
 
