@@ -23,6 +23,8 @@ INCREASE_BY_PERCENTAGE=2 # whole numbers only
 BELOW_THIS_PERCENT_TO_RESIZE=5
 
 # Email Options
+# If using Linnode, make sure to setup Email 
+# https://www.linode.com/community/questions/19082/i-just-created-my-first-linode-and-i-cant-send-emails-why
 SEND_EMAIL=False
 EMAIL_SMTP=smtp.123-reg.co.uk
 EMAIL_PASS=<EMaiL PASSWORD>

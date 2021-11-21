@@ -30,14 +30,15 @@ def connect_to_api(
         data = r.text
     if data.get("errors"):
         return data, data
-
+    if data.get('id'):
+        if data['id'] == 'unprocessable_entity':
+             return data, data
     rtn = data
 
     if rtn_data:
         try:
             rtn = {k: v for k, v in data[key].items() if k in rtn_data}
         except (KeyError, AttributeError) as e:
-            log.info(f"problem with response key, see error {e}")
             try:
                 rtn = {k: v for k, v in data.items() if k in rtn_data}
             except:
@@ -53,7 +54,7 @@ def resize_volume_digital_ocean(
     get_volume_data, _ = connect_to_api(
         token, DO_API, endpoint + f"?name={volume_name}"
     )
-    volumes = get_volume_data[0]["volumes"]
+    volumes = get_volume_data["volumes"]
     volume = flatten([x for x in volumes if x["name"] == volume_name][0])
     size = volume["size_gigabytes"]
     volume_id = volume["id"]
