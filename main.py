@@ -6,7 +6,7 @@ from util.hdd_utils import check_hdd_size, resize_hdd_linux
 from util.send_alerts import send_success_alerts, send_error_alerts
 
 
-def run(provider_info: object) -> None:
+def run(provider_info: tuple) -> None:
     func, provider = provider_info
     while True:
         resize_msg = ""
