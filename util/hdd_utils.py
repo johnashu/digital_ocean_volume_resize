@@ -26,15 +26,18 @@ def resize_hdd_linux(hdd_name: str) -> tuple:
         log.info(resized)
         if error:
             not_resized_message = "do!"
-            error_msg = f"Resizing Did not complete on System\nYou may need to restart your node.\n\n{error}"
-            log.error(error_msg)
+            error_msg = f"Resizing Did not complete on System\nYou may need to restart your node.\n{error}"
             try:
                 splits = error.split()
                 if splits[-1].endswith(not_resized_message):
                     if PROVIDER == 'LN':
-                        return False, f'{error_msg}\n\n Please follow these instructions from Linnode\n\n{linnode_resize_instructions.format(hdd_name,hdd_name,hdd_name,hdd_name,hdd_name)}'
+                        linnode_error = f'{error_msg}\n\n Please follow these instructions from Linnode\n{linnode_resize_instructions.format(hdd_name,hdd_name,hdd_name,hdd_name,hdd_name)}'
+                        log.error(linnode_error)
+                        return False, linnode_error
+                    log.error(error_msg)
                     return False, error_msg
-            except IndexError:
+            except IndexError as e:
+                log.error(f"Resizing Did not complete on System\n{e}")
                 return False, error_msg
         return True, resized
     except FileNotFoundError as e:
