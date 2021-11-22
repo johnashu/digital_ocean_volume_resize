@@ -126,6 +126,8 @@ In the Email and alerts you will see 2 seperate values.
 2. **System Original Size : 644 | System New Size: 650**
     > This is the size that will be displayed on your node if you run the command `df -h | grep /mnt/<VOLUME_NAME>`
     
+    i.e.
+    
     `df -h | grep /mnt/volume_sfo3_02`
-    >>> */dev/sda* **650G** *412G  210G  67% /mnt/volume_sfo3_02*
+    > */dev/sda* **650G** *412G  210G  67% /mnt/volume_sfo3_02*
 
