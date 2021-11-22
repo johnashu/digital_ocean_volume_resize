@@ -9,6 +9,7 @@ from util.send_alerts import send_success_alerts, send_error_alerts
 def run(provider_info: object) -> None:
     func, provider = provider_info
     while True:
+        resize_msg = ""
         try:
             # get HDD size %
             hdd_size_remaining = 100 - check_hdd_size(VOLUME_NAME)
