@@ -30,8 +30,8 @@ log = logging.getLogger()
 d = load_dotenv(find_dotenv())
 log.info(f"Env file Found?  ::  {d}")
 
-DELAY = 3600  # seconds
-HOURS = DELAY // 60 // 60
+HOURS = os.environ["HOURS"]
+DELAY = 3600 * HOURS
 
 DO_API = "https://api.digitalocean.com/v2/"
 LN_API = "https://api.linode.com/v4/"

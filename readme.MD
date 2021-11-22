@@ -33,8 +33,12 @@ VOLUME_NAME=volume-fra1-01
 # API Key
 TOKEN=<PROVIDER API TOKEN>
 
+# Percentage to trigger and Amount
 INCREASE_BY_PERCENTAGE=2 
 BELOW_THIS_PERCENT_TO_RESIZE=5
+
+# Hours in-between checks
+HOURS=6
 
 # Email Options
 SEND_EMAIL=False
