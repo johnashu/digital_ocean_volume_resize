@@ -1,4 +1,5 @@
 import psutil
+from includes.config import PROVIDER, linnode_resize_instructions
 from util.tools import process
 import logging as log
 
@@ -30,6 +31,8 @@ def resize_hdd_linux(hdd_name: str) -> tuple:
             try:
                 splits = error.split()
                 if splits[-1].endswith(not_resized_message):
+                    if PROVIDER == 'LN':
+                        return False, f'{error_msg}\n\n Please follow these instructions from Linnode\n\n{linnode_resize_instructions.format(hdd_name,hdd_name,hdd_name,hdd_name,hdd_name)}'
                     return False, error_msg
             except IndexError:
                 return False, error_msg

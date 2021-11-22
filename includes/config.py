@@ -55,3 +55,27 @@ SEND_ALERT_TO_VSTATS = (
 )
 VSTATS_TOKEN = os.environ["VSTATS_TOKEN"]
 VSTATS_API = "https://vstats.one/api/volume-increase"
+
+
+linnode_resize_instructions = """
+you'll need to restart your Linode for the changes to take effect.
+
+Once your Linode has restarted, make sure the volume is unmounted for safety:
+
+Make sure the volume is unmounted for safety
+umount /dev/disk/by-id/scsi-0Linode_Volume_{}
+
+Assuming you have an ext2, ext3, or ext4 partition, first run a file system check, then resize it to fill the new volume size:
+
+Run a file system check
+e2fsck -f /dev/disk/by-id/scsi-0Linode_Volume_{}
+
+Resize file system to fill the new volume
+resize2fs /dev/disk/by-id/scsi-0Linode_Volume_{}
+
+Now mount it back onto the filesystem:
+
+Mount back onto the filesystem
+mount /dev/disk/by-id/scsi-0Linode_Volume_{} /mnt/{}
+
+"""
