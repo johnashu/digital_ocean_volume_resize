@@ -71,7 +71,9 @@ def resize_volume_digital_ocean(
     j = {"type": "resize", "size_gigabytes": new_size, "region": region}  # slug
     e = f"{endpoint}/{volume_id}/actions"
 
-    resize_msg = f"Digital Ocean Volume {volume_name} resizing from {size} GB -> {new_size} GB"
+    resize_msg = (
+        f"Digital Ocean Volume {volume_name} resizing from {size} GB -> {new_size} GB"
+    )
     log.info(f"Resizing {resize_msg}")
 
     return connect_to_api(
@@ -100,7 +102,9 @@ def resize_volume_linnode(
     j = {"size": new_size}  # slug
     e = f"{endpoint}/{volume_id}/resize"
 
-    resize_msg = f"Lin Node Volume {volume_name} resizing from {size} GB -> {new_size} GB"
+    resize_msg = (
+        f"Lin Node Volume {volume_name} resizing from {size} GB -> {new_size} GB"
+    )
     log.info(f"Resizing {resize_msg}")
 
     return connect_to_api(

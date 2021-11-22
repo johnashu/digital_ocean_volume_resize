@@ -45,15 +45,18 @@ def resize_volume_linux(volume_name: str, org_volume_sizes: dict) -> tuple:
                 log.error(f"Resizing Did not complete on System\n{e}")
                 return False, error_msg
 
-        # LAst Check it is the correct size 
+        # LAst Check it is the correct size
         new_system_volume = check_volume_size(volume_name)
         new = new_system_volume["total"]
         org = org_volume_sizes["total"]
-        if (new == org):
+        if new == org:
             msg = f"Problem Resizing on the System.  Linux has told us it has been resized but the original and resized match too closely. \nSystem Original Size : {org} | System New Size: {new}\n"
             log.error(msg)
             return False, msg
-        return True, f'{resized}\n\nSystem Original Size : {org} | System New Size: {new}\n'
+        return (
+            True,
+            f"{resized}\n\nSystem Original Size : {org} | System New Size: {new}\n",
+        )
     except FileNotFoundError as e:
         return False, f"Resizing Did not complete on System\n\n{e}"
 
