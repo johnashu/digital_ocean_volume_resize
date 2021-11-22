@@ -1,5 +1,11 @@
 # Monitor and Resize Digital Ocean Linnode Volumes
 
+# Clone Git Repo
+
+`git clone https://github.com/johnashu/digital_ocean_volume_resize.git`
+
+To update use `git pull`
+
 # Create .env file
 
 Create a file named `.env` 
