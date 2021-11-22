@@ -43,4 +43,4 @@ def send_email(subject: str, message: str) -> None:
             log.info("end")
 
 
-# send_email('HDD Resized', 'HELLO TEST')
+# send_email('VOLUME Resized', 'HELLO TEST')

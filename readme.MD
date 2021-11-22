@@ -60,9 +60,9 @@ VSTATS_TOKEN=<VSTATS BOT>
 
 ``` bash 
 
-cat<<-EOF > /etc/systemd/system/resize_hdd.service
+cat<<-EOF > /etc/systemd/system/resize_volume.service
 [Unit]
-Description=resize_hdd daemon
+Description=resize_volume daemon
 After=network-online.target
 
 [Service]
@@ -72,7 +72,7 @@ RestartSec=1
 User=<USER>
 WorkingDirectory=/path/to/digital_ocean_volume_resize
 ExecStart=python3 main.py
-SyslogIdentifier=resize_hdd
+SyslogIdentifier=resize_volume
 StartLimitInterval=0
 LimitNOFILE=65536
 LimitNPROC=65536
@@ -86,19 +86,19 @@ EOF
 
 `sudo systemctl daemon-reload`
 
-`sudo chmod 755 /etc/systemd/system/resize_hdd.service`
+`sudo chmod 755 /etc/systemd/system/resize_volume.service`
 
-`sudo systemctl enable resize_hdd.service`
+`sudo systemctl enable resize_volume.service`
 
-`sudo service resize_hdd start `
+`sudo service resize_volume start `
 
-`sudo service resize_hdd status`
+`sudo service resize_volume status`
 
 
 # Read Logs
 
 `tail -f /var/log/syslog`
 
-`journalctl  -xefu resize_hdd`
+`journalctl  -xefu resize_volume`
 
 log file is in `logs/data.log`

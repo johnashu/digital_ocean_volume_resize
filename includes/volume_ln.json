@@ -3,16 +3,16 @@
         {
             "id": 212845,
             "status": "active",
-            "label": "testhdd",
+            "label": "testvolume",
             "created": "2021-11-21T10:00:20",
             "updated": "2021-11-21T10:00:20",
-            "filesystem_path": "/dev/disk/by-id/scsi-0Linode_Volume_testhdd",
+            "filesystem_path": "/dev/disk/by-id/scsi-0Linode_Volume_testvolume",
             "size": 20,
             "linode_id": 32054535,
             "linode_label": "us-west",
             "region": "us-west",
             "tags": [],
-            "hardware_type": "hdd"
+            "hardware_type": "volume"
         }
     ],
     "page": 1,
