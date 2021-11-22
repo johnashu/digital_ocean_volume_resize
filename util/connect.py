@@ -4,6 +4,7 @@ import json
 from util.tools import flatten
 from includes.config import *
 
+
 def connect_to_api(
     token: str,
     api: str,
@@ -21,14 +22,24 @@ def connect_to_api(
 
     try:
         r = call(api + endpoint, json=j, headers=headers)
+        if r.status_code == 401:
+            auth = "Authorisation failed [401] Please check your VStats Token and regenerate a new one if required"
+            log.error(auth)
+            return auth, r.text, resize_msg
         data = r.json()
     except json.decoder.JSONDecodeError:
         data = r.text
-    if data.get("errors"):
-        return data, data, resize_msg
-    if data.get("id"):
-        if data["id"] == "unprocessable_entity":
+
+    try:
+        if data.get("errors"):
             return data, data, resize_msg
+        if data.get("id"):
+            if data["id"] == "unprocessable_entity":
+                return data, data, resize_msg
+    except AttributeError as e:
+        log.error(e)
+        return data, data, e
+
     rtn = data
 
     if rtn_data:

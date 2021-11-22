@@ -12,7 +12,8 @@ def run(provider_info: tuple) -> None:
         resize_msg = ""
         try:
             # get VOLUME size %
-            volume_size_remaining = 100 - check_volume_size(VOLUME_NAME)
+            org_volume_sizes = check_volume_size(VOLUME_NAME)
+            volume_size_remaining = 100 - org_volume_sizes["percent"]
             log.info(f"VOLUME Size  ::  {volume_size_remaining}% Remaining..")
 
             # Check if it is < BELOW_THIS_PERCENT_TO_RESIZE
@@ -27,7 +28,7 @@ def run(provider_info: tuple) -> None:
                 if flat.get("status") in ("done", "resizing"):
                     log.info(f"VOLUME Size increased.. Increasing size on System")
                     # resize on Linux
-                    res, msg = resize_volume_linux(VOLUME_NAME)
+                    res, msg = resize_volume_linux(VOLUME_NAME, org_volume_sizes)
                     if res:
                         log.info("VOLUME Resize Successful.. ")
                         # send email success
