@@ -108,3 +108,20 @@ EOF
 `journalctl  -xefu resize_volume`
 
 log file is in `logs/data.log`
+
+
+# NOTES
+
+Please be aware that there are discrepencies between what is Reported by the Provider and what is reported by the System
+
+In the Email and alerts you will see 2 seperate values.
+
+1. **Resized Digital Ocean Volume volume-sfo3-02 resizing from 649 GB -> 655 GB**
+    > This is the Size that will be displayed in the Volume when you log in to your provider website and check your volume online. 
+
+2. **System Original Size : 644 | System New Size: 650**
+    > This is the size that will be displayed on your node if you run the command `df -h | grep /mnt/<VOLUME_NAME>`
+    
+    `df -h | grep /mnt/volume_sfo3_02`
+    >>> */dev/sda* **650G** *412G  210G  67% /mnt/volume_sfo3_02*
+
