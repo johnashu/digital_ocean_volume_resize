@@ -30,7 +30,7 @@ log = logging.getLogger()
 d = load_dotenv(find_dotenv())
 log.info(f"Env file Found?  ::  {d}")
 
-HOURS = os.environ["HOURS"]
+HOURS = int(os.environ["HOURS"])
 DELAY = 3600 * HOURS
 
 DO_API = "https://api.digitalocean.com/v2/"
