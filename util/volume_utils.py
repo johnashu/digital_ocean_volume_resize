@@ -57,7 +57,7 @@ def resize_volume_linux(volume_name: str, org_volume_sizes: dict) -> tuple:
             return False, msg
         return (
             True,
-            f"{resized}\n\nSystem Original Size : {org} | System New Size: {new}\n",
+            f"{resized}\nSystem Original Size : {org} | System New Size: {new}\n",
         )
     except FileNotFoundError as e:
         return False, f"Resizing Did not complete on System\n\n{e}"
