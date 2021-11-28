@@ -23,7 +23,7 @@ def connect_to_api(
     try:
         r = call(api + endpoint, json=j, headers=headers)
         if r.status_code == 401:
-            auth = "Authorisation failed [401] Please check your VStats Token and regenerate a new one if required"
+            auth = "Authorisation failed [401] Please check your Token and regenerate a new one if required"
             log.error(auth)
             return auth, r.text, resize_msg
         data = r.json()
