@@ -1,7 +1,7 @@
 import sys
 import logging
 
-from config_utils import *
+from includes.config_utils import *
 
 create_data_path((""))
 
@@ -18,7 +18,7 @@ logging.basicConfig(
 
 log = logging.getLogger()
 
-envs = Envs()    
+envs = Envs()
 
 DELAY = 3600 * envs.HOURS
 

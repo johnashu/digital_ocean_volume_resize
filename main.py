@@ -66,4 +66,3 @@ run(providers[envs.PROVIDER])
 
 # For testing messages..
 # send_to_vstats(f'Beans  ( volume-sfo3-11 )', 'On toast with Cheese', 'success')
-

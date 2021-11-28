@@ -27,8 +27,9 @@ def connect_to_api(
             log.error(auth)
             return auth, r.text, resize_msg
         data = r.json()
-    except json.decoder.JSONDecodeError:
+    except json.decoder.JSONDecodeError as e:
         data = r.text
+        log.error(f"Problem with API {e}")
 
     try:
         if data.get("errors"):
@@ -50,18 +51,23 @@ def connect_to_api(
                 rtn = {k: v for k, v in data.items() if k in rtn_data}
             except:
                 pass
-
     return rtn, flatten(rtn), resize_msg
 
 
 def resize_volume_digital_ocean(
     percentage_increase: int, volume_name: str, token: str, endpoint: str
 ) -> connect_to_api:
+    # replace incase user takes the name from Ubuntu and not Provider..
+    volume_name = volume_name.replace("_", "-")
 
     get_volume_data, _, _ = connect_to_api(
         token, DO_API, f"{endpoint}?name={volume_name}"
     )
     volumes = get_volume_data["volumes"]
+    if not volumes:
+        msg = f"No Volumes Found with the name  {volume_name}!"
+        return get_volume_data, {}, msg
+
     volume = flatten([x for x in volumes if x["name"] == volume_name][0])
     size = volume["size_gigabytes"]
     volume_id = volume["id"]
@@ -71,9 +77,7 @@ def resize_volume_digital_ocean(
     j = {"type": "resize", "size_gigabytes": new_size, "region": region}  # slug
     e = f"{endpoint}/{volume_id}/actions"
 
-    resize_msg = (
-        f"Digital Ocean Volume ( {volume_name} ) resizing from {size} GB -> {new_size} GB"
-    )
+    resize_msg = f"Digital Ocean Volume ( {volume_name} ) resizing from {size} GB -> {new_size} GB"
     log.info(f"Resizing {resize_msg}")
 
     return connect_to_api(
@@ -92,8 +96,14 @@ def resize_volume_linnode(
     percentage_increase: int, volume_name: str, token: str, endpoint: str
 ) -> connect_to_api:
 
+    # replace incase user takes the name from Ubuntu and not Provider..
+    volume_name = volume_name.replace("_", "-")
+
     get_volume_data, _, _ = connect_to_api(token, LN_API, endpoint)
     volumes = get_volume_data["data"]
+    if not volumes:
+        msg = f"No Volumes Found with the name  {volume_name}!"
+        return get_volume_data, {}, msg
     volume = flatten([x for x in volumes if x["label"] == volume_name][0])
     size = int(volume["size"])
     volume_id = volume["id"]

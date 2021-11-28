@@ -9,16 +9,24 @@ def create_data_path(pth: str, data_path: str = "logs") -> os.path:
         os.mkdir(p)
     return p
 
+
 class Envs:
     def __init__(self, **kw):
         self.load_envs()
 
     def load_envs(self):
         config = dotenv_values(find_dotenv())
-        print(config)
-    
+
         for k, v in config.items():
-            try:    
+            try:
                 setattr(self, k, int(v))
             except (SyntaxError, ValueError):
-                setattr(self, k, True if v.lower() == "true" else  False if v.lower() == "false" else v)
+                setattr(
+                    self,
+                    k,
+                    True
+                    if v.lower() == "true"
+                    else False
+                    if v.lower() == "false"
+                    else v,
+                )
