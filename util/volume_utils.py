@@ -1,5 +1,5 @@
 import psutil
-from includes.config import PROVIDER, linnode_resize_instructions
+from includes.config import envs, linnode_resize_instructions
 from util.tools import process
 import logging as log
 
@@ -35,8 +35,10 @@ def resize_volume_linux(volume_name: str, org_volume_sizes: dict) -> tuple:
             try:
                 splits = error.split()
                 if splits[-1].endswith(not_resized_message):
-                    if PROVIDER == "LN":
-                        linnode_error = f"{error_msg}\n\n Please follow these instructions from Linnode\n{linnode_resize_instructions.format(*([volume_name]) * 5)}"
+
+                    if envs.PROVIDER == "LN":
+                        linnode_error = f"{error_msg}\n\n Please follow these instructions from Linnode\n{linnode_resize_instructions.format(volume_name,volume_name,volume_name,volume_name,volume_name)}"
+
                         log.error(linnode_error)
                         return False, linnode_error
                     log.error(error_msg)
@@ -55,15 +57,7 @@ def resize_volume_linux(volume_name: str, org_volume_sizes: dict) -> tuple:
             return False, msg
         return (
             True,
-            f"{resized}\n\nSystem Original Size : {org} | System New Size: {new}\n",
+            f"{resized}\nSystem Original Size : {org} | System New Size: {new}\n",
         )
     except FileNotFoundError as e:
         return False, f"Resizing Did not complete on System\n\n{e}"
-
-
-if __name__ == "__main__":
-    volume = "volume_sfo3_02"
-    space_left = check_volume_size(volume)
-    log.info(space_left)
-
-    resize_volume_linux(volume)

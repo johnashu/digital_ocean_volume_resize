@@ -27,8 +27,9 @@ def connect_to_api(
             log.error(auth)
             return auth, r.text, resize_msg
         data = r.json()
-    except json.decoder.JSONDecodeError:
+    except json.decoder.JSONDecodeError as e:
         data = r.text
+        log.error(f"Problem with API {e}")
 
     try:
         if data.get("errors"):
@@ -48,7 +49,7 @@ def connect_to_api(
         except (KeyError, AttributeError) as e:
             try:
                 rtn = {k: v for k, v in data.items() if k in rtn_data}
-            except:
+            except AttributeError:
                 pass
 
     return rtn, flatten(rtn), resize_msg
@@ -57,11 +58,17 @@ def connect_to_api(
 def resize_volume_digital_ocean(
     percentage_increase: int, volume_name: str, token: str, endpoint: str
 ) -> connect_to_api:
+    # replace incase user takes the name from Ubuntu and not Provider..
+    volume_name = volume_name.replace("_", "-")
 
     get_volume_data, _, _ = connect_to_api(
         token, DO_API, f"{endpoint}?name={volume_name}"
     )
     volumes = get_volume_data["volumes"]
+    if not volumes:
+        msg = f"No Volumes Found with the name  {volume_name}!"
+        return get_volume_data, {}, msg
+
     volume = flatten([x for x in volumes if x["name"] == volume_name][0])
     size = volume["size_gigabytes"]
     volume_id = volume["id"]
@@ -71,9 +78,7 @@ def resize_volume_digital_ocean(
     j = {"type": "resize", "size_gigabytes": new_size, "region": region}  # slug
     e = f"{endpoint}/{volume_id}/actions"
 
-    resize_msg = (
-        f"Digital Ocean Volume ( {volume_name} ) resizing from {size} GB -> {new_size} GB"
-    )
+    resize_msg = f"Digital Ocean Volume ( {volume_name} ) resizing from {size} GB -> {new_size} GB"
     log.info(f"Resizing {resize_msg}")
 
     return connect_to_api(
@@ -92,8 +97,14 @@ def resize_volume_linnode(
     percentage_increase: int, volume_name: str, token: str, endpoint: str
 ) -> connect_to_api:
 
+    # replace incase user takes the name from Ubuntu and not Provider..
+    volume_name = volume_name.replace("_", "-")
+
     get_volume_data, _, _ = connect_to_api(token, LN_API, endpoint)
     volumes = get_volume_data["data"]
+    if not volumes:
+        msg = f"No Volumes Found with the name  {volume_name}!"
+        return get_volume_data, {}, msg
     volume = flatten([x for x in volumes if x["label"] == volume_name][0])
     size = int(volume["size"])
     volume_id = volume["id"]
@@ -117,17 +128,3 @@ def resize_volume_linnode(
         rtn_data=("size", "id", "status"),
     )
 
-
-if __name__ == "__main__":
-    # full, flat, resize_msg = connect_to_api(TOKEN, LN_API, ENDPOINT, requests.get)
-
-    # print(full)
-    print(SEND_EMAIL)
-    if not SEND_EMAIL:
-        print(INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT)
-        full, flat, resize_msg = resize_volume_linnode(
-            INCREASE_BY_PERCENTAGE, VOLUME_NAME, TOKEN, ENDPOINT
-        )
-
-        print(flat.get("status"))
-        print(full)
