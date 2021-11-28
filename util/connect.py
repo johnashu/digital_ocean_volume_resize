@@ -72,7 +72,7 @@ def resize_volume_digital_ocean(
     e = f"{endpoint}/{volume_id}/actions"
 
     resize_msg = (
-        f"Digital Ocean Volume < {volume_name} > resizing from {size} GB -> {new_size} GB"
+        f"Digital Ocean Volume ( {volume_name} ) resizing from {size} GB -> {new_size} GB"
     )
     log.info(f"Resizing {resize_msg}")
 
@@ -103,7 +103,7 @@ def resize_volume_linnode(
     e = f"{endpoint}/{volume_id}/resize"
 
     resize_msg = (
-        f"Lin Node Volume < {volume_name} > resizing from {size} GB -> {new_size} GB"
+        f"Lin Node Volume ( {volume_name} ) resizing from {size} GB -> {new_size} GB"
     )
     log.info(f"Resizing {resize_msg}")
 
