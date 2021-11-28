@@ -1,5 +1,5 @@
 import psutil
-from includes.config import PROVIDER, linnode_resize_instructions
+from includes.config import envs, linnode_resize_instructions
 from util.tools import process
 import logging as log
 
@@ -35,7 +35,7 @@ def resize_volume_linux(volume_name: str, org_volume_sizes: dict) -> tuple:
             try:
                 splits = error.split()
                 if splits[-1].endswith(not_resized_message):
-                    if PROVIDER == "LN":
+                    if envs.PROVIDER == "LN":
                         linnode_error = f"{error_msg}\n\n Please follow these instructions from Linnode\n{linnode_resize_instructions.format(volume_name,volume_name,volume_name,volume_name,volume_name)}"
                         log.error(linnode_error)
                         return False, linnode_error

@@ -1,6 +1,6 @@
 import sys
 import os
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv, find_dotenv, dotenv_values
 import logging
 
 
@@ -27,35 +27,31 @@ logging.basicConfig(
 
 log = logging.getLogger()
 
-d = load_dotenv(find_dotenv())
-log.info(f"Env file Found?  ::  {d}")
+class Envs:
+    def __init__(self, **kw):
+        self.load_envs()
 
-HOURS = int(os.environ["HOURS"])
-DELAY = 3600 * HOURS
+    def load_envs(self):
+        config = dotenv_values(".env")
+        print(config)
+    
+        for k, v in config.items():
+            try:    
+                setattr(self, k, int(v))
+            except (SyntaxError, ValueError):
+                setattr(self, k, True if v.lower() == "true" else  False if v.lower() == "false" else v)
+
+
+envs = Envs()    
+
+DELAY = 3600 * envs.HOURS
 
 DO_API = "https://api.digitalocean.com/v2/"
 LN_API = "https://api.linode.com/v4/"
 
 ENDPOINT = "volumes"
 
-PROVIDER = os.environ["PROVIDER"]
-TOKEN = os.environ["TOKEN"]
-VOLUME_NAME = os.environ["VOLUME_NAME"]
-INCREASE_BY_PERCENTAGE = int(os.environ["INCREASE_BY_PERCENTAGE"])
-BELOW_THIS_PERCENT_TO_RESIZE = int(os.environ["BELOW_THIS_PERCENT_TO_RESIZE"])
-
-SEND_EMAIL = True if os.environ["SEND_EMAIL"].lower() == "true" else False
-EMAIL_SMTP = os.environ["EMAIL_SMTP"]
-EMAIL_PASS = os.environ["EMAIL_PASS"]
-EMAIL_FROM = os.environ["EMAIL_FROM"]
-EMAIL_TO = os.environ["EMAIL_TO"]
-
-SEND_ALERT_TO_VSTATS = (
-    True if os.environ["SEND_ALERT_TO_VSTATS"].lower() == "true" else False
-)
-VSTATS_TOKEN = os.environ["VSTATS_TOKEN"]
 VSTATS_API = "https://vstats.one/api/volume-increase"
-
 
 linnode_resize_instructions = """
 you'll need to restart your Linode for the changes to take effect.
