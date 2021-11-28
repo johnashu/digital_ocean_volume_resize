@@ -61,11 +61,3 @@ def resize_volume_linux(volume_name: str, org_volume_sizes: dict) -> tuple:
         )
     except FileNotFoundError as e:
         return False, f"Resizing Did not complete on System\n\n{e}"
-
-
-if __name__ == "__main__":
-    volume = "volume_sfo3_02"
-    space_left = check_volume_size(volume)
-    log.info(space_left)
-
-    resize_volume_linux(volume)

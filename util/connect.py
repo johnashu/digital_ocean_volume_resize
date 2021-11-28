@@ -49,8 +49,9 @@ def connect_to_api(
         except (KeyError, AttributeError) as e:
             try:
                 rtn = {k: v for k, v in data.items() if k in rtn_data}
-            except:
+            except AttributeError:
                 pass
+
     return rtn, flatten(rtn), resize_msg
 
 
