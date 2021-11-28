@@ -68,6 +68,10 @@ VSTATS_TOKEN=<VSTATS BOT>
 
 # create systemd
 
+> if you are unsure of the location of `/path/to/digital_ocean_volume_resize`
+> navigate to the dir and run the command `pwd` (Path Current Directoy)
+> This will give you the location , i.e. `/maffaz/harmony/digital_ocean_volume_resize`
+
 ``` bash 
 
 cat<<-EOF > /etc/systemd/system/resize_volume.service
