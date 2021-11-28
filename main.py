@@ -3,7 +3,7 @@ from time import sleep
 from includes.config import *
 from util.connect import resize_volume_linnode, resize_volume_digital_ocean
 from util.volume_utils import check_volume_size, resize_volume_linux
-from util.send_alerts import send_success_alerts, send_error_alerts
+from util.send_alerts import send_success_alerts, send_error_alerts, send_to_vstats
 
 
 def run(provider_info: tuple) -> None:
@@ -61,3 +61,7 @@ providers = {
 }
 
 run(providers[PROVIDER])
+
+
+# For testing messages..
+# send_to_vstats(f'Beans  ( volume-sfo3-11 )', 'On toast with Cheese', 'success')
