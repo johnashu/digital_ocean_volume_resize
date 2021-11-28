@@ -26,7 +26,7 @@ def resize_volume_linux(volume_name: str, org_volume_sizes: dict) -> tuple:
         get_device = f"df -P /mnt/{volume_name}" + " | awk 'END{print $1}'"
         device, error = process(get_device)
         log.info(device)
-        resize = f"resize2fs {device}"
+        resize = f"sudo resize2fs {device}"
         resized, error = process(resize)
         log.info(resized)
         if error:
