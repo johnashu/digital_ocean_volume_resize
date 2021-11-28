@@ -128,17 +128,3 @@ def resize_volume_linnode(
         rtn_data=("size", "id", "status"),
     )
 
-
-if __name__ == "__main__":
-    # full, flat, resize_msg = connect_to_api(envs.TOKEN, LN_API, ENDPOINT, requests.get)
-
-    # print(full)
-    print(envs.SEND_EMAIL)
-    if not envs.SEND_EMAIL:
-        print(envs.INCREASE_BY_PERCENTAGE, envs.VOLUME_NAME, envs.TOKEN, ENDPOINT)
-        full, flat, resize_msg = resize_volume_linnode(
-            envs.INCREASE_BY_PERCENTAGE, envs.VOLUME_NAME, envs.TOKEN, ENDPOINT
-        )
-
-        print(flat.get("status"))
-        print(full)
