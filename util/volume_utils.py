@@ -36,7 +36,7 @@ def resize_volume_linux(volume_name: str, org_volume_sizes: dict) -> tuple:
                 splits = error.split()
                 if splits[-1].endswith(not_resized_message):
                     if PROVIDER == "LN":
-                        linnode_error = f"{error_msg}\n\n Please follow these instructions from Linnode\n{linnode_resize_instructions.format(volume_name,volume_name,volume_name,volume_name,volume_name)}"
+                        linnode_error = f"{error_msg}\n\n Please follow these instructions from Linnode\n{linnode_resize_instructions.format(*([volume_name]) * 5)}"
                         log.error(linnode_error)
                         return False, linnode_error
                     log.error(error_msg)
