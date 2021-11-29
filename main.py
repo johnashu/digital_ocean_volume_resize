@@ -16,7 +16,7 @@ def run(provider_info: tuple) -> None:
             volume_size_remaining = 100 - org_volume_sizes["percent"]
             log.info(f"VOLUME Size  ::  {volume_size_remaining}% Remaining..")
 
-            if envs.SPACE_LEFT_ALERT == True:
+            if envs.SPACE_LEFT_ALERT:
                 send_space_left_alert(envs.VOLUME_NAME, volume_size_remaining)
 
 
