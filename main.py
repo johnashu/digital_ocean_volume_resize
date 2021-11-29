@@ -13,17 +13,17 @@ def run(provider_info: tuple) -> None:
         try:
             # get VOLUME size %
             org_volume_sizes = check_volume_size(envs.VOLUME_NAME)
-            volume_size_remaining = 100 - org_volume_sizes["percent"]
-            log.info(f"VOLUME Size  ::  {volume_size_remaining}% Remaining..")
+            volume_percent_size_remaining = 100 - org_volume_sizes["percent"]
+            log.info(f"VOLUME Size  ::  {volume_percent_size_remaining}% Remaining..")
 
             if envs.SPACE_LEFT_ALERT:
-                send_space_left_alert(envs.VOLUME_NAME, volume_size_remaining)
+                send_space_left_alert(envs.VOLUME_NAME, volume_percent_size_remaining,org_volume_sizes["free"])
 
 
             # Check if it is < envs.BELOW_THIS_PERCENT_TO_RESIZE
-            if volume_size_remaining <= envs.BELOW_THIS_PERCENT_TO_RESIZE:
+            if volume_percent_size_remaining <= envs.BELOW_THIS_PERCENT_TO_RESIZE:
                 log.info(
-                    f"VOLUME Size [ {volume_size_remaining}% ] is <= {envs.BELOW_THIS_PERCENT_TO_RESIZE}%.. Increasing size on {provider} volume {envs.VOLUME_NAME}"
+                    f"VOLUME Size [ {volume_percent_size_remaining}% ] is <= {envs.BELOW_THIS_PERCENT_TO_RESIZE}%.. Increasing size on {provider} volume {envs.VOLUME_NAME}"
                 )
                 # resize VOLUME on Digital Ocean
                 full, flat, resize_msg = func(
