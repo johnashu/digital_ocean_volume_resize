@@ -51,6 +51,9 @@ EMAIL_TO=mennovandevlees@gmail.com
 SEND_ALERT_TO_VSTATS=True
 VSTATS_TOKEN=<VSTATS BOT>
 
+#Monitoring alerts - Space Left
+SPACE_LEFT_ALERT=True
+
 ```
 
 # install dependencies
@@ -67,8 +70,8 @@ VSTATS_TOKEN=<VSTATS BOT>
 
 
 # create systemd
-
-> if you are unsure of the location of `/path/to/digital_ocean_volume_resize`
+> NOTE: You will need root access. If you do not have this or would prefer not to then you can create a tmux session under your user and skip the below.
+> If you are unsure of the location of `/path/to/digital_ocean_volume_resize`
 > navigate to the dir and run the command `pwd` (Path Current Directoy)
 > This will give you the location , i.e. `/maffaz/harmony/digital_ocean_volume_resize`
 

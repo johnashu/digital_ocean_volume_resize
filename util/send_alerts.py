@@ -20,7 +20,7 @@ def send_to_vstats(subject: str, msg: str, alert_type: str) -> None:
 
 def send_error_alerts(e: str, volume_name: str, resize_msg: str) -> None:
     log.error("Sending Failed Alerts..")
-    subject = f"[VALIDATOR ERROR] Problem Resizing Volume ( {volume_name} )"
+    subject = f"Problem Resizing Volume ( {volume_name} )"
     msg = f"There was a problem resizing your Volume\n\n\tAttempted to resize {resize_msg}\n\n\tThe following Error occured\n\n\t{e}\n\n\tPlease Check your node for more information"
     send_email(subject, msg)
     send_to_vstats(subject, msg, "error")
@@ -28,7 +28,14 @@ def send_error_alerts(e: str, volume_name: str, resize_msg: str) -> None:
 
 def send_success_alerts(msg: str, volume_name: str, resize_msg: str) -> None:
     log.info("Sending Success Alerts..")
-    subject = f"[VALIDATOR INFO] Volume ( {volume_name} ) resized"
+    subject = f"Volume ( {volume_name} ) resized"
     msg = f"Volume ( {volume_name} ) has been resized successfully\n\n\t Resized {resize_msg}\n\n\t{msg}"
     send_email(subject, msg)
     send_to_vstats(subject, msg, "success")
+
+def send_space_left_alert(volume_name: str, volume_size_remaining: str) -> None:
+    log.info("Sending Monitor Alerts..")
+    subject = f"Volume Size Update"
+    msg = f"Volume ( {volume_name} ) remaining space: <strong>{volume_size_remaining}%</strong>\n\n\t"
+    send_email(subject, msg)
+    send_to_vstats(subject, msg, "space_left")
