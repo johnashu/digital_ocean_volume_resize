@@ -36,6 +36,6 @@ def send_success_alerts(msg: str, volume_name: str, resize_msg: str) -> None:
 def send_space_left_alert(volume_name: str, volume_size_remaining: str) -> None:
     log.info("Sending Monitor Alerts..")
     subject = f"Volume Size Update"
-    msg = f"Volume ( {volume_name} ) remaining space: <strong>{volume_size_remaining}%</strong>\n\n\t"
+    msg = f"{volume_name} remaining space: <strong>{volume_size_remaining}%</strong>\n\n\t"
     send_email(subject, msg)
     send_to_vstats(subject, msg, "space_left")
