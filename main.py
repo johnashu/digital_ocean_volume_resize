@@ -3,7 +3,11 @@ from time import sleep
 from includes.config import *
 from util.connect import resize_volume_linnode, resize_volume_digital_ocean
 from util.volume_utils import check_volume_size, resize_volume_linux
-from util.send_alerts import send_success_alerts, send_error_alerts, send_space_left_alert
+from util.send_alerts import (
+    send_success_alerts,
+    send_error_alerts,
+    send_space_left_alert,
+)
 
 
 def run(provider_info: tuple) -> None:
@@ -17,8 +21,11 @@ def run(provider_info: tuple) -> None:
             log.info(f"VOLUME Size  ::  {volume_percent_size_remaining}% Remaining..")
 
             if envs.SPACE_LEFT_ALERT:
-                send_space_left_alert(envs.VOLUME_NAME, volume_percent_size_remaining,org_volume_sizes["free"])
-
+                send_space_left_alert(
+                    envs.VOLUME_NAME,
+                    volume_percent_size_remaining,
+                    org_volume_sizes["free"],
+                )
 
             # Check if it is < envs.BELOW_THIS_PERCENT_TO_RESIZE
             if volume_percent_size_remaining <= envs.BELOW_THIS_PERCENT_TO_RESIZE:
@@ -70,3 +77,5 @@ run(providers[envs.PROVIDER])
 
 # For testing messages..
 # send_to_vstats(f'Beans  ( volume-sfo3-11 )', 'On toast with Cheese', 'success')
+
+# send_space_left_alert('SOME VOLUME', '65', '654') 

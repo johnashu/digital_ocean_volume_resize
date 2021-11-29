@@ -127,4 +127,3 @@ def resize_volume_linnode(
         call=requests.post,
         rtn_data=("size", "id", "status"),
     )
-
