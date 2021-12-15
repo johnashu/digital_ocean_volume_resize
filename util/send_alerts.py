@@ -2,7 +2,7 @@ from util._email import send_email
 import logging as log
 from includes.config import envs, VSTATS_API
 from util.connect import connect_to_api
-
+import socket
 
 def send_to_vstats(subject: str, msg: str, alert_type: str) -> None:
     if not envs.SEND_ALERT_TO_VSTATS:
@@ -33,12 +33,9 @@ def send_success_alerts(msg: str, volume_name: str, resize_msg: str) -> None:
     send_email(subject, msg)
     send_to_vstats(subject, msg, "success")
 
-
-def send_space_left_alert(
-    volume_name: str, volume_percent_size_remaining: str, volume_size_remaining: str
-) -> None:
+def send_space_left_alert(volume_name: str, volume_percent_size_remaining: str, volume_size_remaining: str) -> None:
     log.info("Sending Monitor Alerts..")
-    subject = f"Volume Size Update"
+    subject = f"Volume Size Update -- {socket.gethostname()}"
     msg = f"{volume_name} remaining space: <strong>{volume_size_remaining}GB ({volume_percent_size_remaining}%) </strong> \n\n\t"
     send_email(subject, msg)
     send_to_vstats(subject, msg, "space_left")
