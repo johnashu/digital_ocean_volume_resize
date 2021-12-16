@@ -21,7 +21,7 @@ Add the following:
 > If using Linnode, make sure to setup Email
 > https://www.linode.com/community/questions/19082/i-just-created-my-first-linode-and-i-cant-send-emails-why
 
-> Add Vstats Token.  On Telegram -> @vStatsBot - use command `/volumetoken` to generate a token.
+> Add Vstats Token.  On Telegram -> @vStatsBot - use command `/token` to generate a token.
 
 > Toggle the `SEND_EMAIL` & `SEND_ALERT_TO_VSTATS` choose `True` / `False` to send alerts to these 2.
 
