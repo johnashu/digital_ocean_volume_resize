@@ -28,7 +28,7 @@ def run(provider_info: tuple) -> None:
                 )
 
             # Check if it is < envs.BELOW_THIS_PERCENT_TO_RESIZE
-            if volume_percent_size_remaining <= envs.BELOW_THIS_PERCENT_TO_RESIZE:
+            if volume_percent_size_remaining <= envs.BELOW_THIS_PERCENT_TO_RESIZE and func:
                 log.info(
                     f"VOLUME Size [ {volume_percent_size_remaining}% ] is <= {envs.BELOW_THIS_PERCENT_TO_RESIZE}%.. Increasing size on {provider} volume {envs.VOLUME_NAME}"
                 )
@@ -56,7 +56,11 @@ def run(provider_info: tuple) -> None:
                     send_error_alerts(full, envs.VOLUME_NAME, resize_msg)
 
             else:
-                log.info(f"VOLUME Size is healthy, sleeping for {envs.HOURS} Hour(s)..")
+                if func:
+                    log.info(f"VOLUME Size is healthy, sleeping for {envs.HOURS} Hour(s)..")
+                else:
+                    log.info(f"Sleeping for {envs.HOURS} Hour(s)..")
+
         except Exception as e:
             send_error_alerts(e, envs.VOLUME_NAME, resize_msg)
             log.error(e)
@@ -71,6 +75,7 @@ def run(provider_info: tuple) -> None:
 providers = {
     "DO": (resize_volume_digital_ocean, "Digital Ocean"),
     "LN": (resize_volume_linnode, "LinNode"),
+    "HZ": (None, "Hetzner")
 }
 
 run(providers[envs.PROVIDER])
