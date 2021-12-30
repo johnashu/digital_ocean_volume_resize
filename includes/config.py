@@ -29,6 +29,14 @@ ENDPOINT = "volumes"
 
 VSTATS_API = "https://vstats.one/api/volume-increase"
 
+providers = {
+    # Auto resizing via API providers
+    "DO": (resize_volume_digital_ocean, "Digital Ocean"),
+    "LN": (resize_volume_linnode, "LinNode"),
+    # None Auto resizing for alerts only.
+    "XX": (None, envs.PROVIDER_NAME)
+}
+
 linnode_resize_instructions = """
 you'll need to restart your Linode for the changes to take effect.
 

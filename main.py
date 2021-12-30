@@ -72,12 +72,6 @@ def run(provider_info: tuple) -> None:
         envs.load_envs()
 
 
-providers = {
-    "DO": (resize_volume_digital_ocean, "Digital Ocean"),
-    "LN": (resize_volume_linnode, "LinNode"),
-    "HZ": (None, "Hetzner")
-}
-
 run(providers[envs.PROVIDER])
 
 # For testing messages..
