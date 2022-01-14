@@ -26,30 +26,34 @@ Add the following:
 > Toggle the `SEND_EMAIL` & `SEND_ALERT_TO_VSTATS` choose `True` / `False` to send alerts to these 2.
 
 ```
-# Choose DO (Digital Ocean) / LN (Linnode)
+# Choose DO (Digital Ocean) / LN (Linnode) / XX (Any other with no auto Resize - Alerts only - provide name in PROVIDER_NAME)
 PROVIDER=DO
-VOLUME_NAME=volume-fra1-01
+VOLUME_NAME=volume_sfo3_02
+PROVIDER_NAME=False # Provide name if PROVIDER=XX  (E.G. Hetzner)
 
-# API Key
-TOKEN=<PROVIDER API TOKEN>
+# API Key DO
+TOKEN=<DIGITAL_OCEAN_API_KEY>
 
-# Percentage to trigger and Amount
-INCREASE_BY_PERCENTAGE=2 
+# # API KEY LN
+# TOKEN=<LINNODE_API_KEY>
+
+# Trigger options
+INCREASE_BY_PERCENTAGE=5 
 BELOW_THIS_PERCENT_TO_RESIZE=5
 
 # Hours in-between checks
 HOURS=6
 
 # Email Options
-SEND_EMAIL=False
+SEND_EMAIL=True
 EMAIL_SMTP=smtp.123-reg.co.uk
-EMAIL_PASS=<EMaiL PASSWORD>
+EMAIL_PASS=<EMAIL_PASSWORD>
 EMAIL_FROM=john@maffaz.com
 EMAIL_TO=mennovandevlees@gmail.com
 
 # Vstats Telegram Bot Options
 SEND_ALERT_TO_VSTATS=True
-VSTATS_TOKEN=<VSTATS BOT>
+VSTATS_TOKEN=<VSTATS_TOKEN>
 
 #Monitoring alerts - Space Left
 SPACE_LEFT_ALERT=True
