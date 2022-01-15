@@ -1,7 +1,9 @@
 import sys
 import logging
-
+import socket
 from includes.config_utils import *
+
+server_hostname = socket.gethostname()
 
 create_data_path((""))
 

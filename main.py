@@ -14,8 +14,9 @@ providers = {
     "DO": (resize_volume_digital_ocean, "Digital Ocean"),
     "LN": (resize_volume_linnode, "LinNode"),
     # None Auto resizing for alerts only.
-    "XX": (None, envs.PROVIDER_NAME)
+    "XX": (None, envs.PROVIDER_NAME),
 }
+
 
 def run(provider_info: tuple) -> None:
     func, provider = provider_info
@@ -35,7 +36,10 @@ def run(provider_info: tuple) -> None:
                 )
 
             # Check if it is < envs.BELOW_THIS_PERCENT_TO_RESIZE
-            if volume_percent_size_remaining <= envs.BELOW_THIS_PERCENT_TO_RESIZE and func:
+            if (
+                volume_percent_size_remaining <= envs.BELOW_THIS_PERCENT_TO_RESIZE
+                and func
+            ):
                 log.info(
                     f"VOLUME Size [ {volume_percent_size_remaining}% ] is <= {envs.BELOW_THIS_PERCENT_TO_RESIZE}%.. Increasing size on {provider} volume {envs.VOLUME_NAME}"
                 )
@@ -64,7 +68,9 @@ def run(provider_info: tuple) -> None:
 
             else:
                 if func:
-                    log.info(f"VOLUME Size is healthy, sleeping for {envs.HOURS} Hour(s)..")
+                    log.info(
+                        f"VOLUME Size is healthy, sleeping for {envs.HOURS} Hour(s).."
+                    )
                 else:
                     log.info(f"Sleeping for {envs.HOURS} Hour(s)..")
 
@@ -84,4 +90,4 @@ run(providers[envs.PROVIDER])
 # For testing messages..
 # send_to_vstats(f'Beans  ( volume-sfo3-11 )', 'On toast with Cheese', 'success')
 
-# send_space_left_alert('SOME VOLUME', '65', '654') 
+# send_space_left_alert('SOME VOLUME', '65', '654')
