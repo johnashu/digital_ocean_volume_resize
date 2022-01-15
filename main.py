@@ -9,6 +9,13 @@ from util.send_alerts import (
     send_space_left_alert,
 )
 
+providers = {
+    # Auto resizing via API providers
+    "DO": (resize_volume_digital_ocean, "Digital Ocean"),
+    "LN": (resize_volume_linnode, "LinNode"),
+    # None Auto resizing for alerts only.
+    "XX": (None, envs.PROVIDER_NAME)
+}
 
 def run(provider_info: tuple) -> None:
     func, provider = provider_info
