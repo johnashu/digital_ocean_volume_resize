@@ -1,3 +1,4 @@
+.env.example
 # Custom
 _play.py
 util/_config.py

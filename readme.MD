@@ -6,11 +6,13 @@
 
 To update use `git pull`
 
-# Create .env file
+# Update .env file
 
-Create a file named `.env` 
-
-Add the following:
+Rename .env.example to .env and edit the following variables:
+```
+cp .env.example .env
+nano .env
+```
 
 > Generate a token in the API section of your provider.
 
