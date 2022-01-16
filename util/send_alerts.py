@@ -43,7 +43,7 @@ def send_space_left_alert(
     volume_name: str, volume_percent_size_remaining: str, volume_size_remaining: str
 ) -> None:
     log.info("Sending Monitor Alerts..")
-    subject = f"Volume Size Update -- {hostname}"
+    subject = f"Volume Size Update -- {server_hostname}"
     msg = f"{volume_name} remaining space: <strong>{volume_size_remaining}GB ({volume_percent_size_remaining}%) </strong> \n\n\t"
 
     send_email(subject, msg)
