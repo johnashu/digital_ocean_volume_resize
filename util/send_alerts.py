@@ -1,11 +1,11 @@
 from util._email import send_email
 import logging as log
-from includes.config import envs, VSTATS_API, server_hostname
+from includes.config import envs, VSTATS_API, hostname
 from util.connect import connect_to_api
 
 
 def send_to_vstats(
-    subject: str, msg: str, alert_type: str, hostname: str = server_hostname
+    subject: str, msg: str, alert_type: str, hostname: str = hostname
 ) -> None:
     if not envs.SEND_ALERT_TO_VSTATS:
         log.info("VSTATS not turned on, not sending Telegram Alerts")
@@ -23,7 +23,7 @@ def send_to_vstats(
 
 def send_error_alerts(e: str, volume_name: str, resize_msg: str) -> None:
     log.error("Sending Failed Alerts..")
-    subject = f"Problem Resizing Volume ( {volume_name} )"
+    subject = f"Problem Resizing Volume ( {volume_name} ) on {hostname}"
     msg = f"There was a problem resizing your Volume\n\n\tAttempted to resize {resize_msg}\n\n\tThe following Error occured\n\n\t{e}\n\n\tPlease Check your node for more information"
 
     send_email(subject, msg)
@@ -32,7 +32,7 @@ def send_error_alerts(e: str, volume_name: str, resize_msg: str) -> None:
 
 def send_success_alerts(msg: str, volume_name: str, resize_msg: str) -> None:
     log.info("Sending Success Alerts..")
-    subject = f"Volume ( {volume_name} ) resized"
+    subject = f"Volume ( {volume_name} ) resized on {hostname}"
     msg = f"Volume ( {volume_name} ) has been resized successfully\n\n\t Resized {resize_msg}\n\n\t{msg}"
 
     send_email(subject, msg)
